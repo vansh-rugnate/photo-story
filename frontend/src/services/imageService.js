@@ -12,3 +12,14 @@ export async function processImages(imageFiles) {
   if (!res.ok) throw new Error("Server error")
   return res.json() // { captions, story }
 }
+
+export async function regenerateStory(captions) {
+  const res = await fetch(`${API_URL}/regenerate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ captions }),
+  })
+
+  if (!res.ok) throw new Error("Server error")
+  return res.json() // { story }
+}

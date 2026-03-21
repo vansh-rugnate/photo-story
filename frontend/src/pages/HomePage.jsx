@@ -3,13 +3,15 @@ import DropZone from '../components/DropZone'
 import ImageGrid from '../components/ImageGrid'
 import StoryOutput from '../components/StoryOutput'
 import { useImageUpload } from '../hooks/useImageUpload'
-import { processImages } from '../services/imageService'
+import { processImages, regenerateStory } from '../services/imageService'
 
 export default function HomePage() {
   const { images, dragging, inputRef, onDrop, onDragOver, onDragLeave, onFileInput, removeImage } = useImageUpload()
   const [rendered, setRendered] = useState([])
+  const [captions, setCaptions] = useState([])
   const [story, setStory] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [regenerating, setRegenerating] = useState(false)
   const [error, setError] = useState(null)
 
   const handleProcess = async () => {
@@ -19,11 +21,25 @@ export default function HomePage() {
     try {
       const data = await processImages(images)
       setRendered(images)
+      setCaptions(data.captions)
       setStory(data.story)
     } catch {
       setError("Something went wrong, make sure the backend is running.")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleRegenerate = async () => {
+    setRegenerating(true)
+    setError(null)
+    try {
+      const data = await regenerateStory(captions)
+      setStory(data.story)
+    } catch {
+      setError("Something went wrong, make sure the backend is running.")
+    } finally {
+      setRegenerating(false)
     }
   }
 
@@ -59,6 +75,16 @@ export default function HomePage() {
       {error && <p className="mt-4 text-red-400 text-sm">{error}</p>}
 
       <StoryOutput images={rendered} story={story} />
+
+      {story && (
+        <button
+          onClick={handleRegenerate}
+          disabled={regenerating}
+          className="mt-4 px-6 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-700 hover:bg-gray-600 text-white"
+        >
+          {regenerating ? "Regenerating..." : "Regenerate Story"}
+        </button>
+      )}
     </div>
   )
 }

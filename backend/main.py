@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Body
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from PIL import Image
@@ -29,3 +29,10 @@ async def process_images(files: List[UploadFile] = File(...)):
     story = generate_story(captions)
 
     return {"captions": captions, "story": story}
+
+
+@app.post("/regenerate")
+async def regenerate_story(data: dict = Body(...)):
+    captions = data.get("captions", [])
+    story = generate_story(captions)
+    return {"story": story}

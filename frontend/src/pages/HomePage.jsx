@@ -53,7 +53,7 @@ export default function HomePage() {
             : 'bg-gray-700 text-gray-500 cursor-not-allowed'
           }`}
       >
-        {loading ? "Processing..." : "Process Images"}
+        {loading ? "Processing..." : "Generate Story"}
       </button>
 
       {error && <p className="mt-4 text-red-400 text-sm">{error}</p>}

@@ -3,7 +3,7 @@ import HomePage from './pages/HomePage'
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col items-center justify-start">
+    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col items-center justify-start">
       <Navbar />
       <HomePage />
     </div>

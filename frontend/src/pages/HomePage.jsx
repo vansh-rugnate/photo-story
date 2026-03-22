@@ -45,7 +45,7 @@ export default function HomePage() {
 
   return (
     <div className="w-full flex flex-col items-center px-4">
-      <p className="text-gray-400 mb-10 text-sm">
+      <p className="text-gray-600 mb-10 text-lg">
         Upload your images to start converting your favourite holiday pictures into memorable stories!
       </p>
 
@@ -65,8 +65,8 @@ export default function HomePage() {
         disabled={images.length === 0 || loading}
         className={`mt-8 px-8 py-3 rounded-xl text-sm font-semibold transition-all duration-200
           ${images.length > 0 && !loading
-            ? 'bg-violet-600 hover:bg-violet-500 text-white cursor-pointer shadow-lg shadow-violet-900/40'
-            : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+            ? 'bg-violet-600 hover:bg-violet-500 text-white cursor-pointer shadow-md'
+            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
           }`}
       >
         {loading ? "Processing..." : "Generate Story"}
@@ -80,7 +80,7 @@ export default function HomePage() {
         <button
           onClick={handleRegenerate}
           disabled={regenerating}
-          className="mt-4 px-6 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-700 hover:bg-gray-600 text-white"
+          className="mt-4 px-6 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-300 hover:bg-gray-400 text-gray-800"
         >
           {regenerating ? "Regenerating..." : "Regenerate Story"}
         </button>

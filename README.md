@@ -14,7 +14,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-PhotoStory is a fun web application that turns your photos into a short story.
+VibePost is a fun web application that turns your photos into a short story.
 
 ### How It Works
 

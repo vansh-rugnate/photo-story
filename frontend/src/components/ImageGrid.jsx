@@ -2,7 +2,7 @@ export default function ImageGrid({ images, onRemove }) {
   if (!images.length) return null
 
   return (
-    <div className="w-full max-w-2xl mt-6 grid grid-cols-3 sm:grid-cols-4 gap-3">
+    <div className="w-full max-w-2xl mt-4 sm:mt-6 grid grid-cols-3 sm:grid-cols-4 gap-2 sm:gap-3">
       {images.map((img) => (
         <div key={img.id} className="relative group rounded-xl overflow-hidden aspect-square bg-gray-200">
           <img src={img.url} alt={img.name} className="w-full h-full object-cover" />

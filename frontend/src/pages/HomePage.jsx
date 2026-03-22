@@ -80,7 +80,7 @@ export default function HomePage() {
         <button
           onClick={handleRegenerate}
           disabled={regenerating}
-          className="mt-3 sm:mt-4 px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-300 hover:bg-gray-400 text-gray-800"
+          className="mt-1 sm:mt-2 mb-8 sm:mb-10 px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-300 hover:bg-gray-400 text-gray-800"
         >
           {regenerating ? "Regenerating..." : "Regenerate Story"}
         </button>

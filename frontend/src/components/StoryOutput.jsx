@@ -14,7 +14,6 @@ export default function StoryOutput({ images, story }) {
 
       {story && (
         <div className="mt-10 bg-gray-900 rounded-2xl p-8 border border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-200 mb-4">Your Story</h2>
           <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">{story}</p>
         </div>
       )}

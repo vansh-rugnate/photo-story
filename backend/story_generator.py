@@ -1,45 +1,56 @@
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 from typing import List
+import re
 
-generator = pipeline("text-generation", model="facebook/opt-1.3b")
+# Use Phi-2 which is better at instruction following
+model_id = "microsoft/Phi-2"
+tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True)
+generator = pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    device_map="auto",
+)
 
 
 def generate_story(captions: List[str]) -> str:
-    scenes = "\n".join(f"- {c}" for c in captions)
+    scenes = " | ".join(captions)
     prompt = (
-        "Write a fun story in under 60 words based only on these scenes. "
-        "Do not list the scenes. Just write the story. Stop after 60 words.\n\n"
-        f"Scenes:\n{scenes}\n\nStory:\n"
-    )
-
-    prompt = (
-        "Write a fun story in under 60 words based only on these scenes. "
-        "Do not list the scenes. Just write the story. Stop after 60 words.\n\n"
-        f"Scenes:\n{scenes}\n\nStory:\n"
+        "Write a short, coherent story (max 60 words) based on the following scene descriptions. "
+        "Output ONLY the story, nothing else. "
+        "Scenes: "
+        f"{scenes}\n"
+        "Story:"
     )
 
     result = generator(
         prompt,
-        max_new_tokens=100,
+        max_new_tokens=80,
         do_sample=True,
-        temperature=0.8,
+        temperature=0.7,
         top_p=0.9,
-        repetition_penalty=1.3,
-        num_return_sequences=1,
+        repetition_penalty=1.2,
     )
 
     generated = result[0]["generated_text"]
     story = generated[len(prompt):].strip()
 
-    # Hard cap at 60 words
+    # Clean up common issues
+    story = re.sub(r'^\d+\.\s*', '', story)  # Remove numbered lists
+    story = re.sub(r'^-\s*', '', story)  # Remove bullet points
+    story = re.sub(r'^"', '', story).rstrip('"')  # Remove quotes
+    story = re.sub(r'\s+', ' ', story)  # Normalize whitespace
+
+    # Hard word cap
     words = story.split()
     if len(words) > 60:
         story = " ".join(words[:60])
 
-    # Cut off at last sentence boundary
+    # End at sentence boundary
     for end in [". ", "! ", "? "]:
         last = story.rfind(end)
-        if last != -1:
+        if last != -1 and last > 20:  # Ensure at least some content
             story = story[:last + 1]
             break
 

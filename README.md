@@ -6,7 +6,7 @@
   </a>
 
 
-  <h3 align="center">PhotoStory</h3>
+  <h3 align="center">VibePost</h3>
 </div>
 
 
